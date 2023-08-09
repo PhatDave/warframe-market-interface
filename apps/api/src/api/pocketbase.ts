@@ -1,12 +1,14 @@
 import {
     API_ITEM_COLLECTION_DEFAULT_FILTERS,
     API_ITEM_COLLECTION_RECORDS_URL,
-    API_SNAPSHOT_COLLECTION_RECORDS_URL, API_SNAPSHOT_PRICE_COLLECTION_RECORDS_URL
+    API_SNAPSHOT_COLLECTION_RECORDS_URL,
+    API_SNAPSHOT_PRICE_COLLECTION_RECORDS_URL, DEFAULT_GET_OPTIONS,
+    DEFAULT_POST_OPTIONS
 } from "../env.js";
 import type {Item, Order, PocketbaseResponse, Snapshot} from "../types.js";
 
 export async function getPocketbaseItems(): Promise<Item[]> {
-    const res = await fetch(`${API_ITEM_COLLECTION_RECORDS_URL}${API_ITEM_COLLECTION_DEFAULT_FILTERS}`);
+    const res = await fetch(`${API_ITEM_COLLECTION_RECORDS_URL}${API_ITEM_COLLECTION_DEFAULT_FILTERS}`, DEFAULT_GET_OPTIONS);
     const json: PocketbaseResponse = await res.json();
     return json.items;
 }
@@ -40,11 +42,8 @@ export async function recordMarketSnapshot(item: Item, orders: Order[]) {
 
 async function createSnapshot(snapshotData: object): Promise<Snapshot> {
     const res = await fetch(API_SNAPSHOT_COLLECTION_RECORDS_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(snapshotData),
+        ...DEFAULT_POST_OPTIONS,
+        body: JSON.stringify(snapshotData)
     });
     if (res.status != 200) {
         console.error(`Failed creating snapshot with data ${snapshotData}`);
@@ -66,11 +65,8 @@ async function createOrders(snapshot: Snapshot, orders: Order[]) {
 
 async function createOrder(orderData: object) {
     const res = await fetch(API_SNAPSHOT_PRICE_COLLECTION_RECORDS_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
+        ...DEFAULT_POST_OPTIONS,
+        body: JSON.stringify(orderData)
     });
     if (res.status != 200) {
         console.error(`Failed creating order with data ${orderData}`);

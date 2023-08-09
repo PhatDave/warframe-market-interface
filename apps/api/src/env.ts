@@ -15,3 +15,18 @@ export const API_SNAPSHOT_COLLECTION_RECORDS_URL = `${API_SNAPSHOT_COLLECTION_UR
 export const API_SNAPSHOT_PRICE_COLLECTION = "price";
 export const API_SNAPSHOT_PRICE_COLLECTION_URL = `${API_URL}/api/collections/${API_SNAPSHOT_PRICE_COLLECTION}`;
 export const API_SNAPSHOT_PRICE_COLLECTION_RECORDS_URL = `${API_SNAPSHOT_PRICE_COLLECTION_URL}/records`;
+
+export const DEFAULT_GET_HEADERS = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+}
+export const DEFAULT_GET_OPTIONS = {
+    method: "GET",
+    headers: DEFAULT_GET_HEADERS,
+}
+export const DEFAULT_POST_OPTIONS = {
+    method: "POST",
+    headers: DEFAULT_GET_HEADERS,
+}

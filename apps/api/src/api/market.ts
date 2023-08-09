@@ -1,9 +1,9 @@
-import {WARFRAME_MARKET_API_SEARCH_URL} from "../env.js";
+import {DEFAULT_GET_OPTIONS, WARFRAME_MARKET_API_SEARCH_URL} from "../env.js";
 import type {MarketResponse, Order} from "../types.js";
 
 export async function getMarketOrders(itemName: string): Promise<Order[]> {
     const url = buildMarketUrl(itemName);
-    const res = await fetch(url);
+    const res = await fetch(url, DEFAULT_GET_OPTIONS);
     const json: MarketResponse = await res.json();
     return json.payload.orders;
 }
