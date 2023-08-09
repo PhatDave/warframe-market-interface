@@ -1,5 +1,6 @@
 export const WARFRAME_MARKET_AIP_URL = "https://api.warframe.market/v1";
 export const WARFRAME_MARKET_API_SEARCH_URL = `${WARFRAME_MARKET_AIP_URL}/items/$item/orders`;
+export const WARFRAME_MARKET_API_STATISTICS_URL = `${WARFRAME_MARKET_AIP_URL}/items/$item/statistics`;
 
 export const API_URL = "https://pocketbase-warframe-market.site.quack-lab.dev";
 

@@ -5,7 +5,7 @@ import {
     API_SNAPSHOT_PRICE_COLLECTION_RECORDS_URL, DEFAULT_GET_OPTIONS,
     DEFAULT_POST_OPTIONS
 } from "../env.js";
-import type {Item, Order, PocketbaseResponse, Snapshot} from "../types.js";
+import type {Item, Order, PocketbaseResponse, Snapshot, Statistics48hours} from "../types.js";
 
 export async function getPocketbaseItems(): Promise<Item[]> {
     const res = await fetch(`${API_ITEM_COLLECTION_RECORDS_URL}${API_ITEM_COLLECTION_DEFAULT_FILTERS}`, DEFAULT_GET_OPTIONS);
@@ -13,7 +13,7 @@ export async function getPocketbaseItems(): Promise<Item[]> {
     return json.items;
 }
 
-export async function recordMarketSnapshot(item: Item, orders: Order[]) {
+export async function recordMarketSnapshot(item: Item, orders: Order[], statistics: Statistics48hours[]) {
     let averagePrice = 0;
     let minPrice = 1e39;
     let medianPrice = 0;
@@ -29,12 +29,25 @@ export async function recordMarketSnapshot(item: Item, orders: Order[]) {
         medianPrice = orders[Math.floor(orders.length / 2)]!.platinum;
     }
 
-    const snapshotData = {
-        item: item.id,
+    let averageVolume = 0;
+    let medianVolume = 0;
+
+    if (statistics && statistics.length > 0) {
+        for (const stat of statistics) {
+            averageVolume += stat.volume;
+        }
+        averageVolume /= statistics.length;
+        medianVolume = statistics[Math.floor(statistics.length / 2)]!.volume;
+    }
+
+    const snapshotData: Snapshot = {
+        item: item.id!,
         date: new Date(),
         average_price: averagePrice,
         min_price: minPrice,
         median_price: medianPrice,
+        average_volume: averageVolume,
+        median_volume: medianVolume,
     };
     const snapshot: Snapshot = await createSnapshot(snapshotData);
     createOrders(snapshot, orders);

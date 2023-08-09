@@ -1,32 +1,34 @@
 export type Item = {
+    id?: string;
     name: string;
     display_name: string;
-    id: string;
 }
 
 export type Snapshot = {
-    id: string;
+    id?: string;
     item: string;
     date: Date;
-    averagePrice: number;
-    minPrice: number;
-    medianPrice: number;
+    average_price: number;
+    min_price: number;
+    median_price: number;
+    average_volume: number;
+    median_volume: number;
 }
 
 export type Price = {
-    id: string;
+    id?: string;
     item: string;
     snapshot: string;
     username: string;
 }
 
-// Warframe market
+// Market orders
 
-export type MarketResponse = {
-    payload: Payload;
+export type MarketOrderResponse = {
+    payload: OrdersPayload;
 }
 
-export type Payload = {
+export type OrdersPayload = {
     orders: Order[];
 }
 
@@ -52,6 +54,33 @@ export type User = {
   id: string;
   region: string;
   status: string;
+}
+
+// Market Statistics
+
+export type MarketStatisticsResponse = {
+    payload: StatisticsPayload;
+}
+
+export type StatisticsPayload = {
+  statistics_live: Statistics;
+}
+
+export type Statistics = {
+    "48hours": Statistics48hours[];
+}
+
+export type Statistics48hours = {
+    datetime: string;
+    volume: number;
+    min_price: number;
+    max_price: number;
+    avg_price: number;
+    wa_price: number;
+    median: number;
+    order_type: string;
+    id: string;
+    mod_rank: number;
 }
 
 // Pocketbase
